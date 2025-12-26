@@ -16,15 +16,32 @@ class DuckDBConnector:
         if token:
             os.environ["motherduck_token"] = token
 
-    def log_trades(self, data) -> None:
+    def log_trades(self, data, is_paper: bool) -> None:
         """
-        Log trades to the database.
-
-        Args:
-            Data
+        Add trades to the database.
         """
 
         self.conn.execute("""
-            INSERT INTO trades (id)
-
-        """)
+            INSERT INTO trades (
+            order_id, 
+            created_at, 
+            filled_at, 
+            filled_avg_price,
+            filled_qty,
+            position_intent,
+            side,
+            symbol,
+            is_paper
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, [
+            data.id,
+            data.created_at,
+            data.filled_at,
+            float(data.filled_avg_price) if data.filled_avg_price else None,
+            float(data.filled_qty) if data.filled_qty else None,
+            data.position_intent.value if data.position_intent else None,
+            data.side.value,
+            data.symbol,
+            is_paper
+        ])

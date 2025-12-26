@@ -1,7 +1,8 @@
 from hermes.context import TradingContext
 from hermes.session.alpaca import get_account_value, get_alpaca_clients
-from hermes.session.session import setup_session
 from hermes.session.db import DuckDBConnector
+from hermes.session.session import setup_session
+
 
 def get_trading_context() -> TradingContext:
     is_paper, risk_pct, risk_reward = setup_session()

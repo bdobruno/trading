@@ -1,14 +1,14 @@
 import os
 from typing import Tuple
-from alpaca.trading.enums import PositionIntent
-from hermes.trading.order_entry import handle_exit_orders
 
 from alpaca.data.historical import OptionHistoricalDataClient, StockHistoricalDataClient
 from alpaca.trading.client import TradingClient
+from alpaca.trading.enums import PositionIntent
 from alpaca.trading.stream import TradingStream
 from dotenv import load_dotenv
 
 from hermes.context import TradingContext
+from hermes.trading.order_entry import handle_exit_orders
 
 
 def _get_api_keys(is_paper) -> Tuple:
@@ -67,21 +67,23 @@ async def start_stream(ctx: TradingContext) -> None:
             print(f"   Stop Price: ${order.stop_price}")
 
         if data.event == "fill":
-            # ctx.duckdb.log_trades(data)
-            if order.position_intent in [PositionIntent.BUY_TO_OPEN, PositionIntent.SELL_TO_OPEN]:
+            ctx.duckdb.log_trades(data.order, ctx.is_paper)
+            if order.position_intent in [
+                PositionIntent.BUY_TO_OPEN,
+                PositionIntent.SELL_TO_OPEN,
+            ]:
                 pending = ctx.pending_orders[order.id]
                 print("Position opened! Submitting exit orders...")
                 handle_exit_orders(
                     ctx,
-                    side=pending['side'],
-                    symbol=pending['symbol'],
-                    qty=pending['qty'],
-                    stop_loss_price=pending['stop_loss_price'],
-                    take_profit_price=pending['take_profit_price']
+                    side=pending["side"],
+                    symbol=pending["symbol"],
+                    qty=pending["qty"],
+                    stop_loss_price=pending["stop_loss_price"],
+                    take_profit_price=pending["take_profit_price"],
                 )
-                
+
                 del ctx.pending_orders[order.id]
-            
 
         if order.filled_avg_price:
             print(f"   Filled Price: ${order.filled_avg_price}")
