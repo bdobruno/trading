@@ -20,5 +20,6 @@ package = true
 
 [dependency-groups]
 dev = [
+    "coverage>=7.13.0",
     "pytest>=9.0.2",
 ]

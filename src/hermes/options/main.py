@@ -11,8 +11,8 @@ from hermes.options.utils import (
 
 
 def parsing_options(ctx: TradingContext, input: str) -> str | None:
-    symbol = get_symbol_from_input(input)
-    request = get_option_contract_request(symbol)
+    underlying_symbol = get_symbol_from_input(input)
+    request = get_option_contract_request(underlying_symbol)
     response = ctx.client.get_option_contracts(request)
 
     contracts = response.option_contracts
@@ -30,7 +30,7 @@ def parsing_options(ctx: TradingContext, input: str) -> str | None:
         typed_contracts = [c for c in matching_contract if c.type == type_enum]
 
         strikes = sorted(set(c.strike_price for c in typed_contracts))
-        selected_strike = get_strike(strikes)
+        selected_strike = get_strike(ctx, underlying_symbol, strikes)
 
         final_contract = next(
             c for c in typed_contracts if c.strike_price == float(selected_strike)

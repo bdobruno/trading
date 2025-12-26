@@ -5,6 +5,8 @@ from alpaca.data.requests import OptionLatestQuoteRequest
 from alpaca.trading.enums import ContractType
 from alpaca.trading.requests import GetOptionContractsRequest
 
+from hermes.trading.order_entry import get_latest_price
+
 
 def get_option_contract_request(symbol) -> GetOptionContractsRequest:
     return GetOptionContractsRequest(underlying_symbols=[f"{symbol}"])
@@ -14,8 +16,17 @@ def get_symbol_from_input(input) -> str:
     return input.split()[1]
 
 
-def get_strike(strikes) -> float:
-    return questionary.select("Strike:", choices=[str(s) for s in strikes]).ask()
+def get_closest_strike(strikes: List[float], underlying_price: float) -> float:
+    return min(strikes, key=lambda x: abs(x - underlying_price))
+
+
+def get_strike(ctx, underlying_symbol, strikes: List[float]) -> float:
+    underlying_price = get_latest_price(ctx, underlying_symbol, side="buy")
+    closest_strike = get_closest_strike(strikes, underlying_price)
+
+    return questionary.select(
+        "Strike:", choices=[str(s) for s in strikes], default=str(closest_strike)
+    ).ask()
 
 
 def get_option_type() -> str:
