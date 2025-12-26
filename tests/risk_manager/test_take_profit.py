@@ -17,6 +17,8 @@ def test_take_profit_buy():
         account_value=account_value,
         risk_reward=risk_reward,
         risk_amount=risk_pct * account_value,
+        duckdb=Mock(),
+        account_currency="USD",
     )
     tp = define_take_profit_price(ctx, entry_price=100, stop_loss_price=98, side="buy")
     assert tp == 106  # delta=2, reward=2*3=6, 100+6=106
@@ -35,6 +37,8 @@ def test_take_profit_sell():
         account_value=account_value,
         risk_reward=risk_reward,
         risk_amount=risk_pct * account_value,
+        duckdb=Mock(),
+        account_currency="USD",
     )
     tp = define_take_profit_price(
         ctx, entry_price=100, stop_loss_price=102, side="sell"
