@@ -8,7 +8,7 @@ from alpaca.trading.stream import TradingStream
 from dotenv import load_dotenv
 
 from hermes.context import TradingContext
-from hermes.trading.order_entry import handle_exit_orders
+from hermes.trading.orders.main import handle_exit_orders
 
 
 def _get_api_keys(is_paper) -> Tuple:

@@ -8,7 +8,8 @@ from prompt_toolkit.shortcuts import PromptSession
 from hermes.options.main import parsing_options
 from hermes.session.alpaca import start_stream
 from hermes.session.main import get_trading_context
-from hermes.trading.order_entry import get_latest_price, handle_order_entry
+from hermes.trading.orders.main import handle_order_entry
+from hermes.trading.orders.utils import get_latest_price
 
 
 async def main(ctx):
