@@ -2,6 +2,9 @@
 import os
 
 import duckdb
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class DuckDBConnector:
@@ -21,27 +24,36 @@ class DuckDBConnector:
         Add trades to the database.
         """
 
-        self.conn.execute("""
+        self.conn.execute(
+            """
             INSERT INTO trades (
-            order_id, 
-            created_at, 
-            filled_at, 
+            execution_id,
+            created_at,
+            filled_at,
             filled_avg_price,
             filled_qty,
             position_intent,
             side,
             symbol,
-            is_paper
+            is_paper,
+            order_id
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, [
-            data.id,
-            data.created_at,
-            data.filled_at,
-            float(data.filled_avg_price) if data.filled_avg_price else None,
-            float(data.filled_qty) if data.filled_qty else None,
-            data.position_intent.value if data.position_intent else None,
-            data.side.value,
-            data.symbol,
-            is_paper
-        ])
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+            [
+                data.execution_id,
+                data.order.created_at,
+                data.order.filled_at,
+                float(data.order.filled_avg_price)
+                if data.order.filled_avg_price
+                else None,
+                float(data.order.filled_qty) if data.order.filled_qty else None,
+                data.order.position_intent.value
+                if data.order.position_intent
+                else None,
+                data.order.side.value,
+                data.order.symbol,
+                is_paper,
+                data.order.id,
+            ],
+        )

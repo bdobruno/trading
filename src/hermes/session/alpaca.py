@@ -67,7 +67,7 @@ async def start_stream(ctx: TradingContext) -> None:
             print(f"   Stop Price: ${order.stop_price}")
 
         if data.event == "fill":
-            ctx.duckdb.log_trades(data.order, ctx.is_paper)
+            ctx.duckdb.log_trades(data, ctx.is_paper)
             if order.position_intent in [
                 PositionIntent.BUY_TO_OPEN,
                 PositionIntent.SELL_TO_OPEN,
