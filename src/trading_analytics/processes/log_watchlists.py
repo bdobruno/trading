@@ -1,17 +1,20 @@
+import json
+
 import polars as pl
 
 from trading_analytics.db.db import DuckDBConnector
 
-pets = []
-
-gappers = []
-
 
 def to_df(tickers: list[str], event_type: str = "add") -> pl.DataFrame:
-    return pl.DataFrame({"ticker": tickers, "event_type": event_type}).filter(pl.col("ticker") != "")
+    return pl.DataFrame({"ticker": tickers, "event_type": event_type}).filter(
+        pl.col("ticker") != ""
+    )
 
 
 def main():
+    data = json.load(open("src/trading_analytics/processes/watchlist.json"))
+    pets = data["pets"]
+    gappers = data["gappers"]
     with DuckDBConnector() as db:
         if pets:
             print("Logging pets")
