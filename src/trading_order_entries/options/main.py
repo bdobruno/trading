@@ -24,11 +24,6 @@ async def parsing_options(ctx: TradingContext, input: str) -> str | None:
         matching_contract = [
             c for c in contracts if str(c.expiration_date) == selected_date
         ]
-
-        print(f"Contracts before type filter: {len(matching_contract)}")
-        print(
-            f"First contract type: {matching_contract[0].type}, Expected: {type_enum}"
-        )
         typed_contracts = [c for c in matching_contract if c.type == type_enum]
 
         strikes = sorted(set(c.strike_price for c in typed_contracts))

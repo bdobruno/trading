@@ -14,14 +14,21 @@ def setup_database():
     if not motherduck_token:
         raise ValueError("MOTHERDUCK_TOKEN environment variable not set")
 
-    conn = duckdb.connect("md:stocksdb")
+    conn = duckdb.connect("md:")
+
+    db_name = "stocksdb"
+    conn.execute(f"CREATE DATABASE IF NOT EXISTS {db_name};")
+    conn = duckdb.connect(f"md:{db_name}")
+
     try:
         print("Dropping tables in dependency order...")
-        conn.execute("DROP TABLE IF EXISTS stop_orders CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS trades_stop_orders CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS trades_executions CASCADE;")
         conn.execute("DROP TABLE IF EXISTS trades CASCADE;")
         conn.execute("DROP TABLE IF EXISTS account_snapshots CASCADE;")
-        conn.execute("DROP TABLE IF EXISTS executions CASCADE;")
         conn.execute("DROP TABLE IF EXISTS accounts CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS stop_orders CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS executions CASCADE;")
         conn.execute("DROP TABLE IF EXISTS tickers CASCADE;")
         conn.execute("DROP TABLE IF EXISTS watchlist_events CASCADE;")
 
@@ -115,7 +122,7 @@ def setup_database():
                 side VARCHAR NOT NULL,
                 type VARCHAR NOT NULL,
                 account_id INTEGER NOT NULL,
-                trade_id INTEGER NOT NULL
+                trade_id INTEGER NOT NULL,
                 FOREIGN KEY (account_id) REFERENCES accounts(id)
             );
         """)

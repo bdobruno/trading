@@ -3,7 +3,6 @@ from typing import List
 import questionary
 from alpaca.trading.enums import ContractType
 from alpaca.trading.requests import GetOptionContractsRequest
-from prompt_toolkit.shortcuts import prompt
 
 
 def get_option_contract_request(
@@ -36,7 +35,7 @@ async def get_option_type() -> str:
 
 
 async def get_underlying_price() -> float:
-    price = prompt("Insert current underlying price")
+    price = input("Insert current underlying price: ")
     return float(price)
 
 
