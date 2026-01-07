@@ -98,7 +98,7 @@ async def main(ctx):
                                 ctx,
                                 side="buy",
                                 stop_loss_price=stop_price,
-                                limit_price=indicative_price_input,
+                                indicative_price_input=indicative_price_input,
                                 symbol=option_symbol,
                                 is_options=True,
                             )

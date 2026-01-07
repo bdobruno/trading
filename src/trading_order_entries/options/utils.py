@@ -14,8 +14,8 @@ def get_option_contract_request(
         type=contract_type,
         expiration_date_gte=date.today(),
         expiration_date_lte=date.today() + timedelta(days=14),
-        strike_price_gte=str(underlying_price * 0.95),
-        strike_price_lte=str(underlying_price * 1.05),
+        strike_price_gte=str(underlying_price * 0.96),
+        strike_price_lte=str(underlying_price * 1.04),
         limit=50,
     )
 

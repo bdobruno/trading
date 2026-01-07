@@ -25,12 +25,12 @@ def setup_database():
         conn.execute("DROP TABLE IF EXISTS trades_stop_orders CASCADE;")
         conn.execute("DROP TABLE IF EXISTS trades_executions CASCADE;")
         conn.execute("DROP TABLE IF EXISTS trades CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS executions CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS stop_orders CASCADE;")
         conn.execute("DROP TABLE IF EXISTS account_snapshots CASCADE;")
         conn.execute("DROP TABLE IF EXISTS accounts CASCADE;")
-        conn.execute("DROP TABLE IF EXISTS stop_orders CASCADE;")
-        conn.execute("DROP TABLE IF EXISTS executions CASCADE;")
-        conn.execute("DROP TABLE IF EXISTS tickers CASCADE;")
         conn.execute("DROP TABLE IF EXISTS watchlist_events CASCADE;")
+        conn.execute("DROP TABLE IF EXISTS tickers CASCADE;")
 
         print("Dropping sequences...")
         conn.execute("DROP SEQUENCE IF EXISTS executions_seq;")
@@ -84,8 +84,8 @@ def setup_database():
                 id INTEGER PRIMARY KEY DEFAULT nextval('executions_seq'),
                 order_id VARCHAR NOT NULL,
                 execution_id VARCHAR UNIQUE NOT NULL,
-                created_at TIMESTAMP NOT NULL,
-                filled_at TIMESTAMP,
+                created_at TIMESTAMPTZ NOT NULL,
+                filled_at TIMESTAMPTZ NOT NULL,
                 filled_avg_price DOUBLE,
                 filled_qty INTEGER,
                 status VARCHAR NOT NULL,
