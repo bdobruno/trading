@@ -25,6 +25,7 @@ def test_handle_order_entry_buy():
         option_data=mock_option_data,
         db=mock_db,
         account_id=1,
+        account_nr="test123",
         risk_pct=0.02,
         is_paper=True,
         account_value=10000,
@@ -42,7 +43,7 @@ def test_handle_order_entry_buy():
     assert order.symbol == "AAPL"
     assert order.side == OrderSide.BUY
     assert order.qty == 100  # risk_amount=200, delta=2, qty=100
-    assert order.type == OrderType.LIMIT
+    assert order.type == OrderType.MARKET
 
     # Check pending_orders was populated
     assert "test-order-123" in ctx.pending_orders
@@ -72,6 +73,7 @@ def test_handle_order_entry_sell():
         option_data=mock_option_data,
         db=mock_db,
         account_id=1,
+        account_nr="test456",
         risk_pct=0.02,
         is_paper=True,
         account_value=10000,
@@ -89,7 +91,7 @@ def test_handle_order_entry_sell():
     assert order.symbol == "TSLA"
     assert order.side == OrderSide.SELL
     assert order.qty == 40  # risk_amount=200, delta=5, qty=40
-    assert order.type == OrderType.LIMIT
+    assert order.type == OrderType.MARKET
 
     # Check pending_orders was populated
     assert "test-order-456" in ctx.pending_orders

@@ -85,11 +85,11 @@ async def main(ctx):
 
                         if option_symbol:
                             stop_input = await session.prompt_async("Stop price: ")
-                            limit_price_input = await session.prompt_async(
-                                "Entry price: "
+                            indicative_price_input = await session.prompt_async(
+                                "Indicative entry price: "
                             )
                             stop_price = float(stop_input)
-                            limit_price = float(limit_price_input)
+                            indicative_price_input = float(indicative_price_input)
 
                             print(
                                 f"\nSubmitting order for {option_symbol} and stop price {stop_price}"
@@ -98,25 +98,25 @@ async def main(ctx):
                                 ctx,
                                 side="buy",
                                 stop_loss_price=stop_price,
-                                limit_price=limit_price,
+                                limit_price=indicative_price_input,
                                 symbol=option_symbol,
                                 is_options=True,
                             )
                         else:
                             print("No option symbol found")
                     else:
-                        symbol, side, stop_loss, limit_price = input.split()
+                        symbol, side, stop_loss, indicative_price_input = input.split()
                         symbol = symbol.upper()
                         if side.lower() not in ["buy", "sell"]:
                             print("Side must be buy or sell")
                             continue
                         stop_loss_price = float(stop_loss)
-                        limit_price = float(limit_price)
+                        indicative_price_input = float(indicative_price_input)
                         handle_order_entry(
                             ctx,
                             side,
                             stop_loss_price,
-                            limit_price,
+                            indicative_price_input,
                             symbol,
                             is_options=False,
                         )
