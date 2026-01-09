@@ -19,7 +19,7 @@ def arranging_positions_for_printing(positions) -> List:
         positions_list.append(
             {
                 "symbol": position.symbol,
-                "qty": position.quantity,
+                "qty": position.qty,
                 "avg_entry_price": position.avg_entry_price,
                 "market_value": float(position.market_value),
             }
