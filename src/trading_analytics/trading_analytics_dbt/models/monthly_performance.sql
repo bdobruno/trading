@@ -19,4 +19,5 @@ select
     sum(return_pct) as total_return_pct
 from trade_count tc
 join trades_view tv on tc.date_opened = tv.date_opened
-group by strftime(date_trunc('month', tc.date_opened), '%b %Y')
+group by date_trunc('month', tc.date_opened)
+order by date_trunc('month', tc.date_opened)
