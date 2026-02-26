@@ -1,6 +1,6 @@
 # Trading Order Entry & Analytics
 
-CLI tool for managing trading orders on Alpaca with automated execution logging, analytics, and dbt transformations.
+CLI tool for managing trading orders on Alpaca.
 
 ## Features
 
