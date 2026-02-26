@@ -122,7 +122,7 @@ async def main(ctx: TradingContext):
 def open_risk_logging(ctx: TradingContext) -> None:
     ctx.risk_log = open("risk.log", "w")
     log_path = os.path.abspath("risk.log")
-    subprocess.Popen(["osascript", "-e", f'tell app "Terminal" to do script "tail -f {log_path}"'])
+    subprocess.Popen(["/Applications/Alacritty.app/Contents/MacOS/alacritty", "-e", "tail", "-f", log_path])
 
 
 def cli() -> None:
