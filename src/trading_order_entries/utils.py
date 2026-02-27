@@ -22,6 +22,8 @@ def arranging_positions_for_printing(positions) -> List:
                 "qty": position.qty,
                 "avg_entry_price": position.avg_entry_price,
                 "market_value": float(position.market_value),
+                "cost_basis": float(position.cost_basis),
+                "unrealized_pl": position.unrealized_pl,
             }
         )
 
